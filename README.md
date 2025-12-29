@@ -1,36 +1,116 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# MindCare - Psychologist Landing Page
+
+A modern, beautiful landing page for psychological consultation services with Stripe payment integration.
+
+## Features
+
+- 🎨 Modern, responsive design with gradient backgrounds
+- 💳 Stripe payment integration for secure checkout
+- 📱 Mobile-friendly interface
+- ⚡ Fast and optimized with Next.js
+- 🎯 Three consultation packages (all 5-minute sessions)
+- ✅ Success and cancel pages for payment flow
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
+- Node.js 18+ installed
+- Stripe account (for payment processing)
+
+### Installation
+
+1. Install dependencies:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Set up environment variables:
+   - Create a `.env` file in the root directory
+   - Add your Stripe API keys from [Stripe Dashboard](https://dashboard.stripe.com/apikeys)
+   - Make sure to use test keys for development
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Run the development server:
+```bash
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-## Learn More
+## Stripe Setup
 
-To learn more about Next.js, take a look at the following resources:
+**📖 For detailed Stripe setup instructions, see [STRIPE_SETUP.md](./STRIPE_SETUP.md)**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Quick setup:
+1. Create a Stripe account at [stripe.com](https://stripe.com)
+2. Get your API keys from the [Stripe Dashboard](https://dashboard.stripe.com/apikeys)
+3. Create a `.env` file in the root directory with:
+   ```env
+   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_your_publishable_key_here
+   STRIPE_SECRET_KEY=sk_test_your_secret_key_here
+   ```
+4. Replace the placeholder keys with your actual Stripe keys
+5. Restart your development server
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Project Structure
 
-## Deploy on Vercel
+```
+app/
+├── components/
+│   └── ConsultationCard.tsx    # Consultation card component with Stripe integration
+├── api/
+│   └── create-checkout-session/
+│       └── route.ts            # API route for creating Stripe checkout sessions
+├── success/
+│   └── page.tsx                # Success page after payment
+├── cancel/
+│   └── page.tsx                # Cancel page if payment is cancelled
+├── page.tsx                    # Main landing page
+├── layout.tsx                  # Root layout
+└── globals.css                 # Global styles
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Consultation Packages
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The landing page includes three consultation options:
+
+1. **Quick Consultation** - $29.99
+   - Brief assessment
+   - Quick guidance
+   - Resource recommendations
+
+2. **Standard Consultation** - $39.99
+   - Detailed assessment
+   - Personalized guidance
+   - Action plan
+   - Follow-up resources
+
+3. **Premium Consultation** - $49.99
+   - Comprehensive assessment
+   - Expert guidance
+   - Detailed action plan
+   - Priority follow-up
+   - Resource package
+
+All sessions are 5 minutes long.
+
+## Customization
+
+- Update consultation packages in `app/page.tsx`
+- Modify colors and styling in `app/globals.css` and component files
+- Update metadata in `app/layout.tsx`
+- Customize Stripe checkout session in `app/api/create-checkout-session/route.ts`
+
+## Production Deployment
+
+Before deploying to production:
+
+1. Switch to Stripe live keys in your production environment
+2. Update success and cancel URLs in the checkout session creation
+3. Test the payment flow thoroughly
+4. Set up webhooks if needed for additional payment verification
+
+## License
+
+This project is open source and available for use.
+# StripeExample
