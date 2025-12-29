@@ -1,9 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
-  apiVersion: '2025-12-15.clover',
-});
+// Initialize Stripe lazily to avoid build-time errors
+function getStripe() {
+  const secretKey = process.env.STRIPE_SECRET_KEY;
+  if (!secretKey || secretKey.trim() === '') {
+    throw new Error('STRIPE_SECRET_KEY is not configured');
+  }
+  return new Stripe(secretKey, {
+    apiVersion: '2025-12-15.clover',
+  });
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -38,6 +45,9 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     console.log('Creating checkout session for:', body);
     const { priceId, title, price, duration } = body;
+
+    // Initialize Stripe with the secret key
+    const stripe = getStripe();
 
     // Create a Stripe Checkout Session
     const session = await stripe.checkout.sessions.create({
