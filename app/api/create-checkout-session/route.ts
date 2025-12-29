@@ -34,9 +34,14 @@ export async function POST(request: NextRequest) {
       });
       return NextResponse.json(
         { 
-          error: 'Stripe secret key is not configured. Please add STRIPE_SECRET_KEY to your .env file and restart the server.',
+          error: 'Stripe secret key is not configured.',
           details: secretKey ? 'Key exists but appears to be invalid' : 'Key is missing',
-          hint: 'Make sure the key starts with sk_test_ or sk_live_'
+          hint: 'Make sure the key starts with sk_test_ or sk_live_',
+          environment: process.env.NODE_ENV || 'unknown',
+          isVercel: !!process.env.VERCEL,
+          instructions: process.env.VERCEL 
+            ? 'Add STRIPE_SECRET_KEY in Vercel project settings → Environment Variables, then redeploy.'
+            : 'Add STRIPE_SECRET_KEY to your .env file and restart the server.'
         },
         { status: 500 }
       );
@@ -66,8 +71,8 @@ export async function POST(request: NextRequest) {
         },
       ],
       mode: 'payment',
-      success_url: `${request.headers.get('origin') || 'http://localhost:3000'}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${request.headers.get('origin') || 'http://localhost:3000'}/cancel`,
+      success_url: `${request.headers.get('origin') || process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${request.headers.get('origin') || process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/cancel`,
       metadata: {
         consultationType: title,
         duration: duration,
